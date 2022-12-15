@@ -2,11 +2,12 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
+using Core.Model.Item;
 using ListWatchedMoviesAndSeries.Models.Item;
 
 namespace ListWatchedMoviesAndSeries.Models
 {
-    public class WatchItem
+    public class WatchItem : IEquatable<WatchItem>
     {
         public Guid Id { get; set; }
 
@@ -17,25 +18,29 @@ namespace ListWatchedMoviesAndSeries.Models
         [JsonPropertyName("TypeCinema")]
         public TypeCinema Type { get; set; }
 
+        [JsonPropertyName("StatusCinema")]
+        public StatusCinema Status { get; set; }
+
         public decimal? NumberSequel { get; set; }
 
         // EF core
-        private WatchItem() : this(string.Empty, null, TypeCinema.Unknown, null, new WatchDetail())
+        private WatchItem() : this(string.Empty, null, StatusCinema.Unknown, TypeCinema.Unknown, null, new WatchDetail())
         {
         }
 
-        public WatchItem(string name, decimal? numberSequel, TypeCinema type, Guid? id, WatchDetail detail)
+        public WatchItem(string name, decimal? numberSequel, StatusCinema status, TypeCinema type, Guid? id, WatchDetail detail)
         {
             Id = id ?? Guid.NewGuid();
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Detail = detail;
             NumberSequel = numberSequel;
             Type = type;
+            Status = status;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Id, Name, Detail, Type, NumberSequel);
+            return HashCode.Combine(Id, Name, Detail, Status, Type, NumberSequel);
         }
 
         public override bool Equals(object? obj)
@@ -51,6 +56,7 @@ namespace ListWatchedMoviesAndSeries.Models
             return Id == other.Id
                 && Name == other.Name
                 && Detail.Equals(other.Detail)
+                && Status == other.Status
                 && Type == other.Type
                 && NumberSequel == other.NumberSequel;
         }

@@ -17,10 +17,11 @@ namespace EqualsTest
             var secondWatch = new WatchDetail(
                                     new DateTime(year, month, day),
                                     grade);
-            //Act
+
+            // Act
             var comparison = firstWatch.Equals(secondWatch);
 
-            //Assert
+            // Assert
             Assert.True(comparison);
         }
 
@@ -29,7 +30,7 @@ namespace EqualsTest
         [InlineData(2022, 7, 19, 6)]
         public void Equals_Two_Element_Not_With_Same_Fields(int year, int month, int day, int grade)
         {
-            //Arrange
+            // Arrange
             var firstWatch = new WatchDetail(
                                     new DateTime(year, month, day),
                                     grade);
@@ -39,10 +40,10 @@ namespace EqualsTest
                                     new DateTime(year, month, newDay),
                                     grade);
 
-            //Act
+            // Act
             var comparison = firstWatch.Equals(secondWatch);
 
-            //Assert
+            // Assert
             Assert.False(comparison);
         }
 
@@ -51,7 +52,7 @@ namespace EqualsTest
         [InlineData(2022, 7, 19, 6)]
         public void Non_Equality_Of_Two_Elements_With_One_Non_Identical_Null_Field(int year, int month, int day, int grade)
         {
-            //Arrange
+            // Arrange
             var firstWatch = new WatchDetail(
                                     new DateTime(year, month, day),
                                     grade);
@@ -60,10 +61,10 @@ namespace EqualsTest
                                     new DateTime(year, month, day),
                                     null);
 
-            //Act
+            // Act
             var comparison = firstWatch.Equals(secondWatch);
 
-            //Assert
+            // Assert
             Assert.False(comparison);
         }
 
@@ -72,7 +73,7 @@ namespace EqualsTest
         [InlineData(2022, 7, 19)]
         public void Equality_Two_Elements_With_Null_Field(int year, int month, int day)
         {
-            //Arrange
+            // Arrange
             var firstWatch = new WatchDetail(
                                     new DateTime(year, month, day),
                                     null);
@@ -81,27 +82,27 @@ namespace EqualsTest
                                     new DateTime(year, month, day),
                                     null);
 
-            //Act
+            // Act
             var comparison = firstWatch.Equals(secondWatch);
 
-            //Assert
+            // Assert
             Assert.True(comparison);
         }
 
         [Fact]
         public void Compare_Elements_With_Null_Object()
         {
-            //Arrange
+            // Arrange
             var watchDetail = new WatchDetail(
                                     new DateTime(2000, 10, 10),
                                     7);
 
             var nullDetail = (WatchDetail?)null;
 
-            //Act
+            // Act
             var comparison = watchDetail.Equals(nullDetail);
 
-            //Assert
+            // Assert
             Assert.False(comparison);
         }
     }

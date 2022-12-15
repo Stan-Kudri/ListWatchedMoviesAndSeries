@@ -1,3 +1,5 @@
+using Core.ItemFilter;
+using Core.Model;
 using Core.Repository.DbContex;
 using ListWatchedMoviesAndSeries.Models;
 
@@ -7,12 +9,31 @@ namespace ListWatchedMoviesAndSeries.Repository
     {
         private readonly WatchCinemaDbContext _db;
 
+        private Filter _pastFilter = new Filter();
+
+        public Filter PastFilter => _pastFilter;
+
         public WatchItemRepository(WatchCinemaDbContext db)
         {
             _db = db;
         }
 
         public List<WatchItem> GetAll() => _db.WatchItem.ToList() ?? new List<WatchItem>();
+
+        public List<WatchItem> GetItemByFilter(Filter filter)
+        {
+            var listByFilter = new List<WatchItem>();
+
+            IQueryable<WatchItem> itemIQuer = _db.WatchItem;
+
+            var item = itemIQuer
+                .Where(x => x.Type == filter.TypeFilter.Type || filter.TypeFilter.Type == TypeCinemaFilter.AllCinema)
+                .Where(x => x.Status == filter.WatchFilter.Status || filter.WatchFilter.Status == WatchCinemaFilter.AllCinema)
+                .ToList();
+
+            _pastFilter = filter;
+            return item;
+        }
 
         public void Add(WatchItem item)
         {
